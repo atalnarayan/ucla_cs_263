@@ -1,0 +1,90 @@
+\documentclass[10pt]{article}
+\usepackage[margin=0.8in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\pagenumbering{gobble}
+
+\begin{document}
+
+\begin{center}
+{\Large \textbf{LLM-Guided Production Rule Induction for Automated Mathematical Theory Formation}}\\
+\vspace{2mm}
+\textbf{Atal Narayan Sahu}\\
+\textbf{CS263 Project Proposal}
+\end{center}
+
+\textbf{Motivation.}
+Recent work on automated mathematical discovery has moved beyond theorem proving toward \emph{theory formation}: agents now generate definitions, conjectures, and proofs inside machine-checkable environments. FERMAT formalizes this process as an MDP over an evolving theory graph, and EvoAbstract shows that LLM-guided evolutionary search can learn useful \emph{interestingness} functions for exploration \cite{tsoukalas2025fermat}. However, the space of \emph{production rules} used to generate new mathematical objects remains fixed and hand-designed, echoing the classical HR system, where discovery quality depends strongly on the human-specified rule set \cite{tsoukalas2025fermat,colton1999hr}. This project asks: \emph{can an LLM invent new production rules that expand the space of discoverable mathematics?}
+
+\textbf{Core idea.}
+I propose a framework in which an LLM operates not at the level of one-off conjectures, but at the \emph{meta-level}: it proposes new rule schemas that transform existing predicates/functions into new definitions or conjecture templates. Concretely, given the current rule library and a small corpus of successful derivation traces, the LLM will generate candidate rules in a restricted meta-DSL. Each candidate rule will then be filtered by (i) syntax and type checks, (ii) bounded semantic sanity checks on sampled inputs, and (iii) downstream utility measured by short FERMAT rollouts. The goal is to induce rules that are \emph{safe, reusable, and discovery-enabling}, rather than merely syntactically valid.
+
+\textbf{Why this is novel.}
+There is substantial recent work on automated conjecturing and proving from axioms, including Minimo and usefulness-driven self-play, as well as LLM-based conjecture generation in Lean \cite{poesia2024minimo,kasriel2025usefulness,onda2025leanconjecturer}. There is also strong precedent for \emph{abstraction} and \emph{library learning} in program synthesis, where systems such as DreamCoder and LILO learn reusable symbolic components that improve future search \cite{ellis2021dreamcoder,grand2023lilo}. More recently, AMaze showed that automatically optimizing a DSL can significantly accelerate syntax-guided synthesis \cite{ye2026amaze}. However, these lines do not address the problem of learning \emph{mathematical production rules} for open-ended, prover-backed theory formation. FERMAT itself identifies autonomous production-rule synthesis as an open direction \cite{tsoukalas2025fermat}. This project targets exactly that gap.
+
+\textbf{Methodology.}
+The project will begin with a narrow scope: inducing a small family of unary and binary rule schemas over the existing FERMAT domains (e.g., elementary number theory or finite fields). I will define a compact meta-DSL for rule representation, prompt an LLM to generate candidate rules conditioned on existing successful rules and failed search traces, and build a validator that rejects ill-typed or degenerate rules. Surviving rules will be added to the rule library and evaluated through repeated short-horizon theory-formation rollouts. The main comparison will be against the original hand-written rule set, as well as simple automatic baselines such as random rule generation or recombination of existing rules. Key metrics will be: number of valid new concepts discovered, recovery of benchmark concepts, diversity of discovered entities, and marginal improvement in downstream theory-formation reward.
+
+\textbf{Feasibility and expected outcomes.}
+This project is feasible within 8 weeks because it does not require training a large model from scratch; it is primarily a CPU-bound evaluation project with LLM inference in the loop. A realistic setup is 16--32 CPU cores plus API access or a local instruct model for candidate generation. The expected contribution is twofold: (1) a concrete framework for \emph{meta-level} rule induction in automated mathematics, and (2) empirical evidence on whether learned rule libraries improve open-ended symbolic discovery. Even a negative result would be valuable, as it would clarify whether the bottleneck in automated theory formation lies in search guidance, formal conjecturing, or the expressivity of the rule language itself.
+
+\vspace{4mm}
+{\small
+\begin{thebibliography}{9}\setlength{\itemsep}{1pt}
+\bibitem{tsoukalas2025fermat}
+G.~Tsoukalas, R.~Saha, A.~Thakur, S.~Reguyal, and S.~Chaudhuri.
+\newblock Learning Interestingness in Automated Mathematical Theory Formation.
+\newblock arXiv:2511.14778, 2025.
+
+\bibitem{colton1999hr}
+S.~Colton and A.~Bundy.
+\newblock Automatic Concept Formation in Pure Mathematics.
+\newblock In \emph{Proceedings of IJCAI}, 1999.
+
+\bibitem{poesia2024minimo}
+G.~Poesia, D.~Broman, N.~Haber, and N.~D. Goodman.
+\newblock Learning Formal Mathematics From Intrinsic Motivation.
+\newblock arXiv:2407.00695, 2024.
+
+\bibitem{kasriel2025usefulness}
+T.~Kasriel, T.~Lu, Q.~Ding, J.~He, and D.~Song.
+\newblock Usefulness-Driven Learning of Formal Mathematics.
+\newblock MATH-AI Workshop / OpenReview, 2025.
+
+\bibitem{onda2025leanconjecturer}
+N.~Onda, K.~Kasaura, Y.~Oriike, M.~Taniguchi, A.~Sannai, and S.~Sonoda.
+\newblock LeanConjecturer: Automatic Generation of Mathematical Conjectures for Theorem Proving.
+\newblock arXiv:2506.22005, 2025.
+
+\bibitem{ellis2021dreamcoder}
+K.~Ellis, C.~Wong, M.~Nye, M.~Sable-Meyer, L.~Cary, L.~Morales, L.~Hewitt, A.~Solar-Lezama, and J.~B. Tenenbaum.
+\newblock DreamCoder: Growing Generalizable, Interpretable Knowledge with Wake-Sleep Bayesian Program Learning.
+\newblock \emph{Philosophical Transactions of the Royal Society A}, 2021.
+
+\bibitem{grand2023lilo}
+G.~Grand, L.~Wong, M.~Bowers, T.~X. Olausson, M.~Liu, J.~B. Tenenbaum, and J.~Andreas.
+\newblock LILO: Learning Interpretable Libraries by Compressing and Documenting Code.
+\newblock arXiv:2310.19791, 2023.
+
+\bibitem{ye2026amaze}
+Z.~Ye, R.~Ji, Y.~Xiong, and X.~Zhang.
+\newblock Accelerating Syntax-Guided Program Synthesis by Optimizing Domain-Specific Languages.
+\newblock \emph{Proceedings of the ACM on Programming Languages}, 10(POPL), 2026.
+
+\bibitem{romeraparedes2024funsearch}
+B.~Romera-Paredes, M.~Barekatain, M.~Novikov, M.~Balog, A.~Kumar, E.~Dupont, C.~Ruiz, J.~S. Ellenberg, P.~Wang, O.~Fawzi, P.~Kohli, and A.~Fawzi.
+\newblock Mathematical Discoveries from Program Search with Large Language Models.
+\newblock \emph{Nature}, 625:468--475, 2024.
+
+\bibitem{muggleton2015metagol}
+S.~H. Muggleton, D.~Lin, and A.~Tamaddoni-Nezhad.
+\newblock Meta-Interpretive Learning of Higher-Order Dyadic Datalog: Predicate Invention Revisited.
+\newblock \emph{Machine Learning}, 100:49--73, 2015.
+\end{thebibliography}
+}
+
+\end{document}
