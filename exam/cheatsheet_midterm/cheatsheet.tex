@@ -1,0 +1,333 @@
+\documentclass[letterpaper,landscape]{article}
+\usepackage[margin=0.13in]{geometry}
+\usepackage{amsmath,amssymb,graphicx,array,xcolor,enumitem}
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\tabcolsep}{2pt}
+\renewcommand{\arraystretch}{0.92}
+\setlist[itemize]{leftmargin=0.82em,itemsep=0pt,topsep=0pt,parsep=0pt,partopsep=0pt}
+\newcommand{\secbar}[1]{\vspace{1pt}\colorbox{black!12}{\parbox{\linewidth}{\textbf{#1}}}\vspace{1pt}}
+\newcommand{\mini}[1]{\textbf{#1}}
+\newcommand{\eqline}[1]{\[
+\displaystyle #1
+\]}
+\newcommand{\figfit}[2][]{\begin{center}\includegraphics[width=0.72\linewidth,#1]{#2}\end{center}}
+\newcommand{\figsmall}[2][]{\begin{center}\includegraphics[width=0.60\linewidth,#1]{#2}\end{center}}
+\begin{document}
+\raggedright
+\sloppy
+\fontsize{6.15}{6.45}\selectfont
+
+{\centering \textbf{CS 263 Midterm Cheatsheet (Lectures 1--5)}\par}
+\vspace{2pt}
+
+\begin{minipage}[t]{0.325\textwidth}\vspace{0pt}
+\secbar{Lecture 1: Intro to NLP}
+\mini{What NLP covers.} Mapping language to structure or actions: MT, sentiment, IE, QA, instruction following, LLM generation.
+\mini{Why hard.}
+\begin{itemize}
+\item \textbf{Ambiguity:} sense, syntax/PP attachment, pronoun reference.
+\item \textbf{Scale/drift:} huge vocabularies, long context, changing usage.
+\item \textbf{Reliability:} fluent output can still hallucinate.
+\end{itemize}
+\mini{Course arc.} Task definition $\rightarrow$ metrics $\rightarrow$ representations $\rightarrow$ LMs $\rightarrow$ seq2seq/attention/transformers.
+
+\secbar{Lecture 2: Coreference Resolution}
+\mini{Task.} Input: a document. Output: \textbf{clusters of mentions} that refer to the same entity.
+\begin{itemize}
+\item \textbf{Mentions:} pronouns, common nouns, named entities.
+\item Boundaries can be tricky; mentions can be nested.
+\item Resolution may need syntax, semantics, and commonsense.
+\end{itemize}
+
+\mini{Metrics.}
+\begin{itemize}
+\item \textbf{Exact match accuracy:} 1 only if full clustering exactly matches gold.
+\item \textbf{Pairwise/MUC precision/recall:} compare predicted vs gold mention-pairs.
+\item \textbf{BCUB:} average mention-level precision/recall; often more stable than pure pairwise scoring.
+\end{itemize}
+\eqline{\mathrm{Precision}=\frac{TP}{TP+FP}\qquad
+\mathrm{Recall}=\frac{TP}{TP+FN}\qquad
+F_1=\frac{2PR}{P+R}}
+
+\mini{Aggregation.}
+\begin{itemize}
+\item \textbf{Macro-$F_1$:} average document-level $F_1$.
+\item \textbf{Micro-$F_1$:} aggregate counts first, then compute $F_1$.
+\end{itemize}
+
+\mini{Modeling pipeline.}
+\begin{itemize}
+\item Detect mention spans, then score span pairs.
+\item Useful cues: lexical match, embeddings, number/gender agreement, syntax.
+\item Inference: cluster by link decisions such as greedy best-left-link.
+\item Old: feature engineering + classifier. New: end-to-end neural mention detection + pairwise scoring.
+\end{itemize}
+
+\mini{Bias note.} Coref systems can encode gender stereotypes (Wino-bias style failures); check fairness, not just average score.
+\figfit[trim=25 30 25 18,clip]{assets/coref_constituency.png}
+
+\secbar{Lecture 3: Word-Level Representation}
+\mini{One-hot vs dense.}
+\begin{itemize}
+\item One-hot words are sparse, huge, and encode no similarity.
+\item Dense vectors let semantics appear as geometry.
+\end{itemize}
+\mini{Distributional hypothesis.} Similar context $\Rightarrow$ similar meaning.
+\mini{PMI / PPMI.}
+\eqline{\mathrm{PMI}(w_1,w_2)=\log_2\frac{P(w_1,w_2)}{P(w_1)P(w_2)}}
+\eqline{\mathrm{PPMI}(w_1,w_2)=\max\!\left(\log_2\frac{P(w_1,w_2)}{P(w_1)P(w_2)},0\right)}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.325\textwidth}\vspace{0pt}
+\secbar{Lecture 3: Representation (cont.)}
+\mini{Discrete representation.} One-hot vectors treat words as atomic symbols.
+\begin{itemize}
+\item Dimension $=|V|$; huge and sparse.
+\item No notion of similarity: dot product between different one-hots is $0$.
+\item Unseen words/phrases get zero counts in count-based models.
+\end{itemize}
+
+\mini{Distributional hypothesis.}
+\begin{itemize}
+\item Harris/Firth intuition: words occurring in similar contexts have similar meanings.
+\item Semantic similarity can be approximated by geometry in vector space.
+\end{itemize}
+
+\mini{PMI / PPMI.}
+\eqline{\mathrm{PMI}(w_1,w_2)=\log_2\frac{P(w_1,w_2)}{P(w_1)P(w_2)}}
+\begin{itemize}
+\item Positive PMI $>$ 0: co-occur more than chance.
+\item Negative PMI is noisy in practice; truncate it.
+\end{itemize}
+\eqline{\mathrm{PPMI}(w_1,w_2)=\max\!\left(\log_2\frac{P(w_1,w_2)}{P(w_1)P(w_2)},\,0\right)}
+
+\mini{Count-based embeddings.}
+\begin{itemize}
+\item Build a co-occurrence matrix $X$ from context windows/taxonomies.
+\item Reduce dimension with low-rank approximation / SVD.
+\end{itemize}
+\eqline{X_{d\times n}\approx U_{d\times k}\Sigma_{k\times k}V^\top_{k\times n}\qquad d,n\gg k}
+
+\mini{Dense word vectors.}
+\begin{itemize}
+\item Continuous geometry: cosine similarity, neighborhoods, analogies.
+\item Lecture examples: GloVe, fastText, multilingual vectors, modern embedding APIs.
+\end{itemize}
+
+\mini{Limitations.}
+\begin{itemize}
+\item Co-occurrence alone can be misleading.
+\item Static vectors conflate word senses.
+\item Embeddings can encode social bias.
+\item Contextualized representations condition on surrounding text.
+\end{itemize}
+
+\secbar{Lecture 3: Skip-gram / Word2Vec}
+\mini{Setup.}
+\begin{itemize}
+\item Each word has two vectors: center/input $v_w$ and outside/output $u_w$.
+\item Goal: predict context words around a center word.
+\item High dot product $u_o^\top v_c$ means outside word $o$ is likely near center word $c$.
+\end{itemize}
+
+\mini{Softmax objective.}
+\eqline{p(o\mid c)=\frac{\exp(u_o^\top v_c)}{\sum_{w\in V}\exp(u_w^\top v_c)}}
+\begin{itemize}
+\item Train by maximizing log-likelihood over all $(\text{center},\text{context})$ pairs from a sliding window.
+\item Equivalent view: many multiclass classification problems; loss is cross-entropy / NLL.
+\end{itemize}
+
+\mini{Gradient intuition.}
+\eqline{\frac{\partial \log p(o\mid c)}{\partial v_c}=u_o-\mathbb{E}_{w\sim p(w\mid c)}[u_w]}
+\begin{itemize}
+\item Pull $v_c$ toward the true context vector $u_o$.
+\item Push $v_c$ away from expected distractor contexts.
+\end{itemize}
+
+\mini{Efficiency.} Full softmax is expensive for large vocabularies; negative sampling approximates training with sampled negatives instead of summing over all words.
+\mini{Static vs contextual.}
+\begin{itemize}
+\item Static embeddings give one vector per word type.
+\item Contextualized representations adapt to the sentence context and partially resolve sense ambiguity.
+\end{itemize}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.325\textwidth}\vspace{0pt}
+\secbar{Lecture 4: Language Models}
+\mini{Definition.} A language model scores/generates sequences:
+\eqline{P(w_{1:T})=\prod_{t=1}^{T}P(w_t\mid w_{<t})}
+\mini{Uses.} Next-word prediction, sentence scoring/ranking, generation.
+
+\mini{$n$-gram LM.}
+\begin{itemize}
+\item Markov assumption: only last $n-1$ tokens matter.
+\end{itemize}
+\eqline{P(w_t\mid w_{<t})\approx P(w_t\mid w_{t-n+1:t-1})}
+\eqline{P_{\text{MLE}}(w_i\mid h)=\frac{c(h,w_i)}{c(h)}}
+\begin{itemize}
+\item Works when counts are reliable; breaks on sparse histories.
+\item Zipf: a few very frequent words, long rare tail.
+\end{itemize}
+
+\mini{Smoothing.}
+\eqline{P_{\text{add-1}}(w_i\mid h)=\frac{c(h,w_i)+1}{c(h)+|V|}}
+\eqline{P_{\text{add-}\lambda}(w_i\mid h)=\frac{c(h,w_i)+\lambda}{c(h)+\lambda|V|}}
+\begin{itemize}
+\item Reallocate mass from seen events to unseen events.
+\item Add-1 often over-smooths when $|V|$ is large.
+\item Tune $\lambda$ on a dev set, not test.
+\end{itemize}
+
+\mini{Neural LM.}
+\begin{itemize}
+\item Fixed-window neural LM removes sparse exact-count dependence.
+\item RNN LM handles variable-length contexts with shared recurrence.
+\end{itemize}
+\eqline{h_t=f(W_h h_{t-1}+W_x x_t+b)\qquad p(w_t\mid h_t)=\mathrm{softmax}(W_o h_t+b_o)}
+\begin{itemize}
+\item Advantage: theoretically can use long context; same weights per time step.
+\item Failure mode: vanishing/exploding gradients.
+\end{itemize}
+
+\mini{LSTM intuition.}
+\begin{itemize}
+\item Vanilla RNN keeps rewriting one hidden state.
+\item LSTM adds a cell state for long-term memory plus gates controlling write/erase/read.
+\item Helps when sequential recency and syntactic recency differ.
+\end{itemize}
+\eqline{
+\begin{aligned}
+f_t&=\sigma(W_f[h_{t-1};x_t]+b_f),\quad
+i_t=\sigma(W_i[h_{t-1};x_t]+b_i)\\
+\tilde c_t&=\tanh(W_c[h_{t-1};x_t]+b_c),\quad
+c_t=f_t\odot c_{t-1}+i_t\odot \tilde c_t\\
+o_t&=\sigma(W_o[h_{t-1};x_t]+b_o),\quad
+h_t=o_t\odot\tanh(c_t)
+\end{aligned}}
+\mini{Variants.} Bidirectional/stacked RNNs; seq2seq composes encoder + decoder.
+\end{minipage}
+
+\clearpage
+{\centering \textbf{CS 263 Midterm Cheatsheet (Lectures 1--5)}\par}
+\vspace{2pt}
+
+\begin{minipage}[t]{0.325\textwidth}\vspace{0pt}
+\secbar{Lecture 4/5: Seq2Seq}
+\mini{Encoder-decoder idea.}
+\begin{itemize}
+\item Encoder maps source $x$ to hidden states / representation.
+\item Decoder RNN emits target sequence autoregressively.
+\item Seq2seq is a \textbf{conditional} language model.
+\end{itemize}
+\eqline{P(y\mid x)=\prod_{t=1}^{|y|}P(y_t\mid y_{<t},x)}
+\begin{itemize}
+\item Training: minimize sum of target token negative log-probabilities.
+\item Vanilla seq2seq bottleneck: a single fixed vector must summarize the whole source.
+\end{itemize}
+
+\mini{Good to remember.}
+\begin{itemize}
+\item Encoder role: convert source sentence into useful internal states.
+\item Decoder role: generate target conditioned on source + previous outputs.
+\item Bidirectional encoders improve source coverage.
+\end{itemize}
+
+\figsmall[trim=28 30 24 16,clip]{assets/seq2seq.png}
+
+\secbar{Lecture 4/5: Attention}
+\mini{Motivation.} Avoid the bottleneck by letting each decoder step look directly at all encoder states.
+\eqline{
+\begin{aligned}
+a_{t,i} &= \mathrm{sim}(h_t^d,h_i^s) \\
+\alpha_t &= \mathrm{softmax}(a_t) \\
+c_t &= \sum_i \alpha_{t,i} h_i^s
+\end{aligned}}
+\begin{itemize}
+\item Predict using $[c_t;h_t^d]$ instead of decoder state alone.
+\item Score function can be \textbf{multiplicative/Luong} or \textbf{additive/Bahdanau}.
+\item Benefits from lecture: better MT quality, bypasses bottleneck, helps gradients, provides interpretability/alignment.
+\end{itemize}
+
+\figsmall[trim=28 32 26 16,clip]{assets/attention.png}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.325\textwidth}\vspace{0pt}
+\secbar{Lecture 5: Decoding Algorithms}
+\mini{Search problem.} Exact enumeration is exponential:
+\eqline{\text{length }K \Rightarrow O(|V|^K)}
+
+\begin{tabular}{@{}p{0.26\linewidth}p{0.69\linewidth}@{}}
+\mini{Greedy} & Pick $\arg\max$ next token each step; fast, local, brittle.\\
+\mini{Beam} & Keep top-$k$ partial hypotheses. $k=1$ is greedy; larger $k$ improves search but costs more.\\
+\mini{Sampling} & Sample from $p(x_t\mid x_{<t})$ instead of taking $\arg\max$; good for open-ended generation.\\
+\mini{Top-$k$} & Sample only from highest-probability $k$ tokens.\\
+\mini{Top-$p$} & Sample from the smallest set whose cumulative probability is at least $p$ (nucleus sampling).\\
+\end{tabular}
+
+\mini{Temperature.}
+\eqline{p_i(T)=\frac{\exp(s_i/T)}{\sum_j \exp(s_j/T)}}
+\begin{itemize}
+\item $T<1$: sharper / lower entropy.
+\item $T>1$: flatter / more diverse.
+\end{itemize}
+
+\secbar{Lecture 5: Transformer}
+\mini{Big picture.} ``Attention is All You Need'': replace recurrence with stacked self-attention + feed-forward blocks; easier to parallelize.
+
+\mini{Self-attention.}
+\eqline{
+\begin{aligned}
+Q &= HW^Q,\quad K=HW^K,\quad V=HW^V \\
+\mathrm{Attn}(Q,K,V) &= \mathrm{softmax}\!\left(\frac{QK^\top}{\sqrt{d_k}}\right)V
+\end{aligned}}
+\begin{itemize}
+\item Query decides what a position asks for.
+\item Key decides how relevant another position is.
+\item Value is the content that gets mixed in.
+\item Scale by $\sqrt{d_k}$ to avoid extremely sharp softmax scores.
+\end{itemize}
+
+\mini{Block structure.}
+\begin{itemize}
+\item Multi-head self-attention $\rightarrow$ feed-forward network.
+\item Residual connection + layer norm after each sublayer.
+\end{itemize}
+\eqline{\mathrm{LayerNorm}(v)=\gamma\odot \frac{v-\mu}{\sigma}+\beta}
+
+\mini{Positions.} Since self-attention alone is permutation-insensitive, add positional information. Lecture mentioned sinusoidal, learned position embeddings, and RoPE.
+\figsmall{assets/jalammar_qkv.png}
+\figsmall[trim=28 28 22 14,clip]{assets/transformer_stack.png}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.325\textwidth}\vspace{0pt}
+\secbar{Lecture 5: Causal Masking / Model Families}
+\mini{Decoder masking.} Decoder-only models must not see future tokens.
+\begin{itemize}
+\item Add a lower-triangular mask to $QK^\top$ \textbf{before} softmax.
+\item Equivalent effect: position $t$ can attend only to positions $\le t$.
+\end{itemize}
+\[
+\begin{bmatrix}
+0&-\infty&-\infty\\
+0&0&-\infty\\
+0&0&0
+\end{bmatrix}
+\]
+\mini{Encoder-only vs decoder-only.}
+\begin{itemize}
+\item \textbf{Encoder-only} (BERT/RoBERTa): bidirectional attention, masked language modeling.
+\item \textbf{Decoder-only} (GPT/LLaMA-style): masked self-attention, causal next-token prediction.
+\end{itemize}
+
+\mini{Residual connections.} Needed because pure self-attention can lose self-information; skip connections preserve input features and improve optimization.
+\mini{Attention matrix intuition.}
+\begin{itemize}
+\item Rows = queries, columns = keys.
+\item Row-wise softmax gives attention distributions.
+\item Visual inspection can expose alignment/coreference patterns, but attention is not a perfect explanation.
+\end{itemize}
+
+\figsmall{assets/jalammar_qkv_matrix.png}
+\figsmall[trim=22 30 20 14,clip]{assets/masked_self_attention.png}
+\figsmall[trim=22 28 18 12,clip]{assets/self_attention.png}
+\end{minipage}
+
+\end{document}
