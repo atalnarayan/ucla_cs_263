@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.10.27)  24 APR 2026 18:13
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.10.27)  24 APR 2026 18:34
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1103,11 +1103,18 @@ File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 
 [2{/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}]
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10> on input line 173.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <7> on input line 173.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <5> on input line 173.
+
 
 [3{/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{/usr/lo
 cal/texlive/2025/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/usr/local/texlive/20
-25/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}{/usr/local/texlive/2025/texmf-d
-ist/fonts/enc/dvips/lm/lm-mathsy.enc}]
+25/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/local/texlive/2025/texmf-d
+ist/fonts/enc/dvips/lm/lm-mathex.enc}]
 
 [4]
 
@@ -1129,7 +1136,7 @@ ist/fonts/enc/dvips/lm/lm-mathsy.enc}]
 
 [13]
 LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 7
-45.
+84.
  (/usr/local/texlive/2025/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
@@ -1151,31 +1158,33 @@ Package rerunfilecheck Info: File `deepseek_math_rl_notes.out' has not changed.
 (rerunfilecheck)             Checksum: 7004CB24F0B509C8DBEC28CA7D95E0E5;5844.
  ) 
 Here is how much of TeX's memory you used:
- 32787 strings out of 473190
- 654441 string characters out of 5715799
- 1113813 words of memory out of 5000000
- 55236 multiletter control sequences out of 15000+600000
- 642423 words of font info for 176 fonts, out of 8000000 for 9000
+ 32861 strings out of 473190
+ 655552 string characters out of 5715799
+ 1110703 words of memory out of 5000000
+ 55305 multiletter control sequences out of 15000+600000
+ 645606 words of font info for 179 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 116i,11n,121p,1211b,792s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 116i,11n,121p,1211b,922s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></usr/lo
 cal/texlive/2025/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></usr/local/texliv
 e/2025/texmf-dist/fonts/type1/public/lm/lmex10.pfb></usr/local/texlive/2025/tex
 mf-dist/fonts/type1/public/lm/lmmi10.pfb></usr/local/texlive/2025/texmf-dist/fo
-nts/type1/public/lm/lmmi8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/p
-ublic/lm/lmr10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lm
-r12.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmr17.pfb></u
-sr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmr8.pfb></usr/local/tex
-live/2025/texmf-dist/fonts/type1/public/lm/lmri10.pfb></usr/local/texlive/2025/
-texmf-dist/fonts/type1/public/lm/lmsy10.pfb></usr/local/texlive/2025/texmf-dist
-/fonts/type1/public/lm/lmsy6.pfb></usr/local/texlive/2025/texmf-dist/fonts/type
-1/public/lm/lmsy8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm
-/lmtt10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/sym
-bols/msbm10.pfb>
-Output written on deepseek_math_rl_notes.pdf (15 pages, 318708 bytes).
+nts/type1/public/lm/lmmi7.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/p
+ublic/lm/lmmi8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lm
+r10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmr12.pfb></u
+sr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmr17.pfb></usr/local/te
+xlive/2025/texmf-dist/fonts/type1/public/lm/lmr7.pfb></usr/local/texlive/2025/t
+exmf-dist/fonts/type1/public/lm/lmr8.pfb></usr/local/texlive/2025/texmf-dist/fo
+nts/type1/public/lm/lmri10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/
+public/lm/lmsy10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/
+lmsy6.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmsy7.pfb><
+/usr/local/texlive/2025/texmf-dist/fonts/type1/public/lm/lmsy8.pfb></usr/local/
+texlive/2025/texmf-dist/fonts/type1/public/lm/lmtt10.pfb></usr/local/texlive/20
+25/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on deepseek_math_rl_notes.pdf (15 pages, 351927 bytes).
 PDF statistics:
- 410 PDF objects out of 1000 (max. 8388607)
- 332 compressed objects within 4 object streams
- 83 named destinations out of 1000 (max. 500000)
- 47997 words of extra memory for PDF output out of 51595 (max. 10000000)
+ 426 PDF objects out of 1000 (max. 8388607)
+ 342 compressed objects within 4 object streams
+ 84 named destinations out of 1000 (max. 500000)
+ 50045 words of extra memory for PDF output out of 51595 (max. 10000000)
 

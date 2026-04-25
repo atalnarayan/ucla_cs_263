@@ -160,22 +160,25 @@ Here $\mathcal S$ is the state space, $\mathcal A$ the action space, $P$ the tra
 
 \subsection{The Smallest RL Picture}
 
-\begin{center}
+\begin{figure}[t]
+\centering
 \begin{tikzpicture}[
-  node distance=1.8cm,
-  box/.style={rectangle, rounded corners=2mm, draw=rlgray, thick, minimum width=3.2cm, minimum height=1.2cm, align=center, fill=white},
-  arrow/.style={-{Latex[length=3mm]}, thick, draw=rlblue}
+  x=1cm,
+  y=1cm,
+  font=\small,
+  card/.style={rectangle, rounded corners=3mm, draw=rlgray, very thick, fill=white, minimum width=4.7cm, minimum height=2.15cm, align=center},
+  loop/.style={-{Latex[length=3.2mm]}, ultra thick},
+  lab/.style={fill=white, inner sep=2pt, rounded corners=1.5mm}
 ]
-  \node[box, fill=blue!6!white] (agent) {Agent\\policy $\pi$};
-  \node[box, fill=green!6!white, right=4.2cm of agent] (env) {Environment\\state $s_t$};
-  \draw[arrow] (agent) -- node[above] {action $a_t$} (env);
-  \draw[arrow] (env) -- node[below] {reward $r_t$, next state $s_{t+1}$} (agent);
-\end{tikzpicture}
-\end{center}
+  \node[card, fill=blue!7!white] (agent) at (0,0) {\textbf{Agent}\\[2pt]policy $\pi(a\mid s)$\\value estimates $V,Q$};
+  \node[card, fill=green!7!white] (env) at (8.6,0) {\textbf{Environment}\\[2pt]current state $s_t$\\dynamics and reward};
 
-  \begin{center}
-  \small Figure 1. The basic agent--environment loop. This is the common core behind chess engines, robot control, Atari agents, and LLM post-training.
-  \end{center}
+  \draw[loop, draw=rlblue] ($(agent.east)+(0,0.55)$) .. controls +(1.5,1.15) and +(-1.5,1.15) .. node[lab, above] {choose action $a_t$} ($(env.west)+(0,0.55)$);
+  \draw[loop, draw=rlorange] ($(env.west)+(0,-0.55)$) .. controls +(-1.5,-1.15) and +(1.5,-1.15) .. node[lab, below] {observe reward $r_t$ and next state $s_{t+1}$} ($(agent.east)+(0,-0.55)$);
+  \node[font=\bfseries\small, color=rlgray] at (4.3,1.9) {interaction loop};
+\end{tikzpicture}
+\caption{The basic agent--environment loop. This is the common core behind chess engines, robot control, Atari agents, and LLM post-training.}
+\end{figure}
 
   If the current state contains all information needed for prediction, we call the problem \emph{Markov}. Then a policy $\pi(a\mid s)$ fully specifies behavior.
 
@@ -262,22 +265,26 @@ Here $\mathcal S$ is the state space, $\mathcal A$ the action space, $P$ the tra
   \begin{figure}[t]
   \centering
   \begin{tikzpicture}[
-    state/.style={circle, draw=rlgray, thick, minimum size=8mm, fill=white},
-    term/.style={rectangle, rounded corners=1.5mm, draw=rlgray, thick, minimum width=10mm, minimum height=8mm, fill=yellow!8!white},
-    edge/.style={-{Latex[length=2.6mm]}, thick, draw=rlgray}
+    x=1cm,
+    y=1cm,
+    font=\small,
+    state/.style={circle, draw=rlgray, very thick, minimum size=12mm, fill=white},
+    term/.style={rectangle, rounded corners=2mm, draw=rlgray, very thick, minimum width=14mm, minimum height=10mm, fill=yellow!8!white},
+    edge/.style={-{Latex[length=2.8mm]}, thick, draw=rlgray},
+    callout/.style={fill=white, inner sep=2pt, rounded corners=1.2mm}
   ]
     \node[state, fill=blue!6!white] (s0) at (0,0) {$s_t$};
-    \node[state, fill=blue!6!white] (s1) at (2,0) {$s_{t+1}$};
-    \node[state, fill=blue!6!white] (s2) at (4,0) {$s_{t+2}$};
-    \node[term] (st) at (6.3,0) {end};
+    \node[state, fill=blue!6!white] (s1) at (2.8,0) {$s_{t+1}$};
+    \node[state, fill=blue!6!white] (s2) at (5.6,0) {$s_{t+2}$};
+    \node[term] (st) at (8.5,0) {end};
 
     \draw[edge] (s0) -- node[above] {$r_t$} (s1);
     \draw[edge] (s1) -- node[above] {$r_{t+1}$} (s2);
     \draw[edge] (s2) -- node[above] {$\cdots$} (st);
 
-    \draw[-{Latex[length=3mm]}, very thick, draw=rlgreen, bend right=25] (s0) to node[below=4pt] {TD(0)} (s1);
-    \draw[-{Latex[length=3mm]}, very thick, draw=rlblue, bend left=20] (s0) to node[above=5pt] {$n$-step TD} (s2);
-    \draw[-{Latex[length=3mm]}, very thick, draw=rlorange, bend left=40] (s0) to node[above=13pt] {Monte Carlo} (st);
+    \draw[-{Latex[length=3mm]}, very thick, draw=rlgreen] (s0.north) to[out=40,in=140] node[callout, pos=0.52, above=2pt] {TD(0)} (s1.north);
+    \draw[-{Latex[length=3mm]}, very thick, draw=rlblue] (s0.north) to[out=52,in=132] node[callout, pos=0.56, above=5pt] {$n$-step TD} (s2.north);
+    \draw[-{Latex[length=3mm]}, very thick, draw=rlorange] (s0.north) to[out=60,in=150] node[callout, pos=0.6, above=7pt] {Monte Carlo} (st.north);
   \end{tikzpicture}
   \caption{How backup depth changes the algorithm. TD updates after one step, Monte Carlo waits until termination, and $n$-step methods interpolate between them.}
   \end{figure}
@@ -331,25 +338,28 @@ Here $\mathcal S$ is the state space, $\mathcal A$ the action space, $P$ the tra
   \begin{figure}[t]
   \centering
   \begin{tikzpicture}[
-    family/.style={rectangle, rounded corners=2mm, draw=rlgray, thick, minimum width=3.2cm, minimum height=1.1cm, align=center, fill=white},
-    link/.style={-{Latex[length=2.8mm]}, thick, draw=rlgray}
+    x=1cm,
+    y=1cm,
+    font=\small,
+    family/.style={rectangle, rounded corners=3mm, draw=rlgray, very thick, minimum height=1.45cm, text width=3.15cm, align=center, fill=white},
+    link/.style={-{Latex[length=3mm]}, thick, draw=rlgray}
   ]
-    \node[family, fill=blue!8!white] (root) at (0,0) {Modern RL};
-    \node[family, fill=green!8!white] (value) at (-5,-2.2) {Value-based\\Q-learning, DQN, Rainbow};
-    \node[family, fill=orange!10!white] (policy) at (-1.7,-2.2) {Policy gradient\\REINFORCE, TRPO, PPO};
-    \node[family, fill=violet!9!white] (ac) at (1.7,-2.2) {Actor--critic\\A2C, A3C, DDPG, TD3, SAC};
-    \node[family, fill=yellow!10!white] (model) at (5,-2.2) {Model-based\\Dyna, AlphaZero, MuZero};
-    \node[family, fill=cyan!10!white] (offline) at (-2.3,-4.5) {Offline RL\\CQL, IQL, Decision Transformer};
-    \node[family, fill=red!8!white] (llm) at (2.3,-4.5) {LLM post-training\\RFT, DPO, PPO, GRPO};
+    \node[family, fill=blue!8!white, text width=2.8cm] (root) at (0,0) {\textbf{Modern RL}};
+    \node[family, fill=green!8!white] (value) at (-5.4,-2.8) {\textbf{Value-based}\\Q-learning, DQN, Rainbow};
+    \node[family, fill=orange!10!white] (policy) at (-1.8,-2.8) {\textbf{Policy gradient}\\REINFORCE, TRPO, PPO};
+    \node[family, fill=violet!9!white] (ac) at (1.8,-2.8) {\textbf{Actor--critic}\\A2C, A3C, DDPG, TD3, SAC};
+    \node[family, fill=yellow!10!white] (model) at (5.4,-2.8) {\textbf{Model-based}\\Dyna, AlphaZero,\\MuZero};
+    \node[family, fill=cyan!10!white] (offline) at (-2.3,-5.3) {\textbf{Offline RL}\\CQL, IQL, Decision Transformer};
+    \node[family, fill=red!8!white] (llm) at (2.3,-5.3) {\textbf{LLM post-training}\\RFT, DPO, PPO, GRPO, RLOO};
 
     \draw[link] (root) -- (value);
     \draw[link] (root) -- (policy);
     \draw[link] (root) -- (ac);
     \draw[link] (root) -- (model);
-    \draw[link] (policy) -- (llm);
-    \draw[link] (ac) -- (llm);
-    \draw[link] (value) -- (offline);
-    \draw[link] (ac) -- (offline);
+    \draw[link] (policy.south) -- ++(0,-0.35) -| (llm.north);
+    \draw[link] (ac.south) -- (llm.north);
+    \draw[link] (value.south) -- ++(0,-0.35) -| (offline.north);
+    \draw[link] (ac.south) -- ++(0,-0.35) -| (offline.north);
   \end{tikzpicture}
   \caption{A family tree of the major modern RL directions. This is a conceptual map, not an exhaustive list of every named variant.}
   \end{figure}
@@ -366,23 +376,29 @@ Here $\mathcal S$ is the state space, $\mathcal A$ the action space, $P$ the tra
   \begin{figure}[t]
   \centering
   \begin{tikzpicture}[
-    box/.style={rectangle, rounded corners=2mm, draw=rlgray, thick, minimum width=3.2cm, minimum height=1.0cm, align=center, fill=white},
-    smallbox/.style={rectangle, rounded corners=2mm, draw=rlgray, thick, minimum width=2.7cm, minimum height=0.95cm, align=center, fill=white},
-    link/.style={-{Latex[length=2.7mm]}, thick, draw=rlblue},
-    back/.style={-{Latex[length=2.7mm]}, thick, draw=rlorange}
+    x=1cm,
+    y=1cm,
+    font=\small,
+    box/.style={rectangle, rounded corners=3mm, draw=rlgray, very thick, minimum height=1.3cm, text width=3.25cm, align=center, fill=white},
+    link/.style={-{Latex[length=2.8mm]}, thick, draw=rlblue},
+    back/.style={-{Latex[length=2.8mm]}, thick, draw=rlorange},
+    sync/.style={-{Latex[length=2.8mm]}, thick, dashed, draw=rlgray},
+    lab/.style={fill=white, inner sep=2pt, rounded corners=1.5mm}
   ]
-    \node[box, fill=green!7!white] (env) at (0,0) {Environment};
-    \node[box, fill=blue!7!white] (qnet) at (4.4,0) {Q-network\\$s \mapsto Q(s,\cdot)$};
-    \node[smallbox, fill=yellow!9!white] (action) at (8.2,0) {Choose action};
-    \node[box, fill=orange!10!white] (replay) at (4.4,-2.3) {Replay buffer\\$(s,a,r,s')$};
-    \node[smallbox, fill=violet!8!white] (target) at (8.2,-2.3) {Target network};
+    \node[box, fill=green!7!white] (env) at (-1.5,0.8) {\textbf{Environment}\\emits next state};
+    \node[box, fill=blue!7!white] (qnet) at (4.0,1.6) {\textbf{Online Q-network}\\$s \mapsto Q(s,\cdot)$};
+    \node[box, fill=yellow!9!white, text width=2.95cm] (action) at (9.4,1.6) {\textbf{$\varepsilon$-greedy head}\\choose action};
+    \node[box, fill=orange!10!white] (replay) at (3.0,-2.0) {\textbf{Replay buffer}\\stores $(s,a,r,s')$};
+    \node[box, fill=violet!8!white, text width=3.15cm] (target) at (8.2,-2.0) {\textbf{Target network}\\slowly updated copy};
 
-    \draw[link] (env) -- node[above] {state} (qnet);
-    \draw[link] (qnet) -- node[above] {greedy / $\varepsilon$-greedy} (action);
-    \draw[link] (action) -- node[right] {act} +(0,-1.2) -| (env);
-    \draw[back] (env) -- node[left] {transition} +(0,-1.15) -| (replay);
-    \draw[back] (replay) -- node[above] {sample minibatch} (target);
-    \draw[back] (replay) -- node[left] {train} (qnet);
+    \draw[link] (env.east) -- node[lab, above] {state} (qnet.west);
+    \draw[link] (qnet.east) -- node[lab, above] {Q values} (action.west);
+    \draw[link] (action.north west) to[out=160,in=20] node[lab, above] {act} (env.north east);
+    \draw[back] (env.south east) to[out=-20,in=160] node[lab, above] {transition $(s,a,r,s')$} (replay.west);
+    \draw[back] (replay.north) -- node[lab, left] {sampled batch} (qnet.south);
+    \draw[back] (replay.east) -- node[lab, above] {next states} (target.west);
+    \draw[sync] (qnet.south east) -- node[lab, right] {sync} (target.north west);
+    \draw[link, draw=rlviolet] (target.north) to[out=95,in=-45] node[lab, right] {TD target} (qnet.south east);
   \end{tikzpicture}
   \caption{Original schematic of the DQN training loop, inspired by the stabilizing ideas in the Atari DQN line.}
   \end{figure}
@@ -453,17 +469,30 @@ Here $\mathcal S$ is the state space, $\mathcal A$ the action space, $P$ the tra
 
   \begin{figure}[t]
   \centering
-  \begin{tikzpicture}[scale=4.2]
-    \draw[->, thick] (0.55,0) -- (1.48,0) node[right] {$r_t = \pi_\theta/\pi_{\mathrm{old}}$};
-    \draw[->, thick] (0.6,-0.22) -- (0.6,0.28) node[above] {update};
-    \fill[green!10] (0.8,-0.2) rectangle (1.2,0.22);
-    \draw[dashed, thick, color=rlgray] (0.8,-0.2) -- (0.8,0.22);
-    \draw[dashed, thick, color=rlgray] (1.2,-0.2) -- (1.2,0.22);
-    \draw[thick, color=rlorange, dashed] (0.62,-0.16) -- (1.38,0.16);
-    \draw[thick, color=rlblue] (0.62,-0.16) -- (1.2,0.08) -- (1.38,0.08);
-    \node[align=center] at (1.0,-0.24) {trust region};
-    \node[color=rlorange] at (1.32,0.17) {unclipped};
-    \node[color=rlblue] at (1.32,0.10) {clipped};
+  \begin{tikzpicture}[
+    x=1cm,
+    y=1cm,
+    font=\small,
+    panel/.style={rectangle, rounded corners=3mm, draw=rlgray, thick, fill=white}
+  ]
+    \node[panel, fill=blue!3!white, minimum width=7.4cm, minimum height=4.8cm] (plotbg) at (0,0) {};
+    \node[panel, fill=yellow!8!white, text width=4.3cm, minimum height=4.8cm, align=left, anchor=west] (callout) at (4.6,0) {\textbf{PPO intuition}\\[4pt]
+    1. Compare the new policy to the old one.\\[2pt]
+    2. Reward improvement inside a safe band.\\[2pt]
+    3. Cap the incentive to move farther once the ratio leaves that band.\\[8pt]
+    \textbf{Net effect:} lucky batches cannot yank the policy too far in one step.};
+
+    \draw[->, thick] (-3.1,-1.45) -- (-3.1,1.7) node[above] {update strength};
+    \draw[->, thick] (-3.4,-1.2) -- (3.1,-1.2) node[right] {$r_t = \pi_\theta/\pi_{\mathrm{old}}$};
+    \fill[green!12] (-1.2,-1.15) rectangle (1.2,1.5);
+    \draw[dashed, thick, color=rlgray] (-1.2,-1.3) -- (-1.2,1.55);
+    \draw[dashed, thick, color=rlgray] (1.2,-1.3) -- (1.2,1.55);
+    \node[fill=white, inner sep=1.5pt, rounded corners=1.2mm] at (0,-1.55) {trust region $[1-\varepsilon,\,1+\varepsilon]$};
+
+    \draw[thick, color=rlorange, dashed] (-2.9,-0.95) -- (2.7,1.0);
+    \draw[very thick, color=rlblue] (-2.9,-0.95) -- (1.2,0.48) -- (2.7,0.48);
+    \node[color=rlorange, anchor=west] at (0.95,1.12) {unclipped objective};
+    \node[color=rlblue, anchor=west] at (1.15,0.7) {clipped objective};
   \end{tikzpicture}
   \caption{PPO's core intuition: do not let one update overreact to a lucky batch. The clipping acts like a seat belt for policy gradients.}
   \end{figure}
@@ -601,25 +630,35 @@ Here $\mathcal S$ is the state space, $\mathcal A$ the action space, $P$ the tra
   \begin{figure}[t]
   \centering
   \begin{tikzpicture}[
-    box/.style={rectangle, rounded corners=2mm, draw=rlgray, thick, minimum width=3.2cm, minimum height=1.0cm, align=center, fill=white},
-    sol/.style={rectangle, rounded corners=2mm, draw=rlgray, thick, minimum width=5.0cm, minimum height=0.95cm, align=left, fill=white},
-    link/.style={-{Latex[length=2.8mm]}, thick, draw=rlviolet}
+    x=1cm,
+    y=1cm,
+    font=\small,
+    box/.style={rectangle, rounded corners=3mm, draw=rlgray, very thick, minimum height=1.3cm, text width=3.35cm, align=center, fill=white},
+    sol/.style={rectangle, rounded corners=3mm, draw=rlgray, very thick, text width=4.8cm, minimum height=1.05cm, align=left, fill=white, inner sep=4mm},
+    link/.style={-{Latex[length=2.8mm]}, thick, draw=rlviolet},
+    lab/.style={fill=white, inner sep=2pt, rounded corners=1.5mm}
   ]
-    \node[box, fill=blue!8!white] (prompt) at (0,0) {Same math prompt $q$};
-    \node[sol, fill=green!8!white] (o1) at (5.7,1.8) {$o_1$: clean derivation, correct final answer \hfill $r_1=0.92$};
-    \node[sol, fill=green!3!white] (o2) at (5.7,0.6) {$o_2$: mostly correct, minor detour \hfill $r_2=0.54$};
-    \node[sol, fill=orange!10!white] (o3) at (5.7,-0.6) {$o_3$: plausible steps, wrong algebra \hfill $r_3=0.08$};
-    \node[sol, fill=red!9!white] (o4) at (5.7,-1.8) {$o_4$: broken reasoning, wrong answer \hfill $r_4=-0.61$};
-    \node[box, fill=violet!8!white, minimum width=4.2cm] (update) at (12.0,0) {Normalize within group\\push above-average up\\push below-average down};
+    \node[box, fill=blue!8!white] (prompt) at (-5.2,0) {\textbf{Same math prompt}\\$q$};
+    \node[sol, fill=green!8!white] (o1) at (0.8,2.4) {\textbf{$o_1$} clean derivation, correct final answer\\[-1pt]\textcolor{rlgreen}{reward $r_1=0.92$}};
+    \node[sol, fill=green!3!white] (o2) at (0.8,0.8) {\textbf{$o_2$} mostly correct, minor detour\\[-1pt]\textcolor{rlgreen!70!black}{reward $r_2=0.54$}};
+    \node[sol, fill=orange!10!white] (o3) at (0.8,-0.8) {\textbf{$o_3$} plausible steps, wrong algebra\\[-1pt]\textcolor{rlorange!90!black}{reward $r_3=0.08$}};
+    \node[sol, fill=red!9!white] (o4) at (0.8,-2.4) {\textbf{$o_4$} broken reasoning, wrong answer\\[-1pt]\textcolor{BrickRed}{reward $r_4=-0.61$}};
+    \node[box, fill=violet!8!white, text width=3.8cm, minimum height=2.55cm] (update) at (6.4,0) {\textbf{Group normalization}\\[3pt]$\tilde r_i = \dfrac{r_i-\mathrm{mean}(\mathbf r)}{\mathrm{std}(\mathbf r)}$\\[6pt]push above-average samples up\\push below-average samples down};
 
-    \draw[link] (prompt) -- (o1.west);
-    \draw[link] (prompt) -- (o2.west);
-    \draw[link] (prompt) -- (o3.west);
-    \draw[link] (prompt) -- (o4.west);
-    \draw[link] (o1.east) -- (update.west);
-    \draw[link] (o2.east) -- (update.west);
-    \draw[link] (o3.east) -- (update.west);
-    \draw[link] (o4.east) -- (update.west);
+    \coordinate (u1) at ($(update.west)+(0,1.1)$);
+    \coordinate (u2) at ($(update.west)+(0,0.35)$);
+    \coordinate (u3) at ($(update.west)+(0,-0.35)$);
+    \coordinate (u4) at ($(update.west)+(0,-1.1)$);
+
+    \begin{pgfonlayer}{background}
+      \node[draw=rlgray, dashed, rounded corners=3mm, thick, fit=(o1)(o2)(o3)(o4), inner sep=0.45cm, fill=rlpaper, fill opacity=0.7, text opacity=1, label={[font=\bfseries\small,text=rlgray]above:sample a group of completions}] (group) {};
+    \end{pgfonlayer}
+
+    \draw[link] (prompt.east) -- node[lab, above] {sample $G$ outputs} (group.west);
+    \draw[link] (o1.east) -- ++(0.25,0) |- (u1);
+    \draw[link] (o2.east) -- ++(0.25,0) -- (u2);
+    \draw[link] (o3.east) -- ++(0.25,0) -- (u3);
+    \draw[link] (o4.east) -- ++(0.25,0) |- (u4);
   \end{tikzpicture}
   \caption{Original intuition figure for GRPO, inspired by the PPO-versus-GRPO comparison in DeepSeekMath. Instead of training a separate critic, GRPO uses relative performance inside a group of completions for the same prompt.}
   \end{figure}

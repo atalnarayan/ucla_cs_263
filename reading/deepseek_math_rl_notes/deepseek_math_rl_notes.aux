@@ -4,46 +4,48 @@
 \providecommand\HyField@AuxAddToCoFields[2]{}
 \@writefile{toc}{\contentsline {section}{\numberline {1}Why RL Feels Different}{2}{section.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {2}Start Even Smaller: Bandits}{2}{section.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces The basic agent--environment loop. This is the common core behind chess engines, robot control, Atari agents, and LLM post-training.}}{3}{figure.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {3}From Bandits to Full RL: Markov Decision Processes}{3}{section.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1}The Smallest RL Picture}{3}{subsection.3.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.2}One Running Example}{4}{subsection.3.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {4}How Classical RL Learns}{4}{section.4}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Dynamic Programming}{4}{subsection.4.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces How backup depth changes the algorithm. TD updates after one step, Monte Carlo waits until termination, and $n$-step methods interpolate between them.}}{5}{figure.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces How backup depth changes the algorithm. TD updates after one step, Monte Carlo waits until termination, and $n$-step methods interpolate between them.}}{5}{figure.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Monte Carlo}{5}{subsection.4.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Temporal-Difference Learning}{5}{subsection.4.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.4}SARSA and Q-Learning}{5}{subsection.4.4}\protected@file@percent }
 \citation{mnih2015}
 \@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces The classical RL toolbox. These methods are still conceptually central even when modern implementations use neural networks.}}{6}{table.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces A family tree of the major modern RL directions. This is a conceptual map, not an exhaustive list of every named variant.}}{6}{figure.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces A family tree of the major modern RL directions. This is a conceptual map, not an exhaustive list of every named variant.}}{6}{figure.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {5}When Neural Networks Enter: Deep RL}{6}{section.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}DQN and the Value-Based Deep RL Line}{6}{subsection.5.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Original schematic of the DQN training loop, inspired by the stabilizing ideas in the Atari DQN line.}}{7}{figure.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Original schematic of the DQN training loop, inspired by the stabilizing ideas in the Atari DQN line.}}{7}{figure.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}DQN and the Value-Based Deep RL Line}{7}{subsection.5.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Policy Gradient: Optimize the Policy Directly}{7}{subsection.5.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Actor--Critic}{7}{subsection.5.3}\protected@file@percent }
 \citation{gae}
 \citation{ppo}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces PPO's core intuition: do not let one update overreact to a lucky batch. The clipping acts like a seat belt for policy gradients.}}{8}{figure.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Actor--Critic}{8}{subsection.5.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.4}Why PPO Became So Popular}{8}{subsection.5.4}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.5}Other Major Modern Directions}{8}{subsection.5.5}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces The shortest honest overview of ``all the RL algorithms we have now'' is really a map of families and their representative members.}}{9}{table.2}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces PPO's core intuition: do not let one update overreact to a lucky batch. The clipping acts like a seat belt for policy gradients.}}{9}{figure.5}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {6}A Mental Map of the Major RL Families}{9}{section.6}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {7}LLMs as Reinforcement Learning Agents}{9}{section.7}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}The Main LLM Post-Training Methods}{9}{subsection.7.1}\protected@file@percent }
 \citation{deepseekmath}
-\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces A useful LLM-alignment map, following the unified perspective emphasized in DeepSeekMath.}}{10}{table.3}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces The shortest honest overview of ``all the RL algorithms we have now'' is really a map of families and their representative members.}}{10}{table.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {7.1}The Main LLM Post-Training Methods}{10}{subsection.7.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {8}Why DeepSeekMath Uses GRPO}{10}{section.8}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {8.1}From PPO to GRPO}{10}{subsection.8.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Original intuition figure for GRPO, inspired by the PPO-versus-GRPO comparison in DeepSeekMath. Instead of training a separate critic, GRPO uses relative performance inside a group of completions for the same prompt.}}{11}{figure.5}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces A useful LLM-alignment map, following the unified perspective emphasized in DeepSeekMath.}}{11}{table.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {8.2}Outcome Supervision vs. Process Supervision}{11}{subsection.8.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.3}Why GRPO Is a Natural Fit for Math}{11}{subsection.8.3}\protected@file@percent }
 \citation{deepseekmath}
-\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces The practical difference between PPO and GRPO in the DeepSeekMath setting.}}{12}{table.4}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Original intuition figure for GRPO, inspired by the PPO-versus-GRPO comparison in DeepSeekMath. Instead of training a separate critic, GRPO uses relative performance inside a group of completions for the same prompt.}}{12}{figure.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.3}Why GRPO Is a Natural Fit for Math}{12}{subsection.8.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {8.4}What DeepSeekMath Actually Reports}{12}{subsection.8.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {8.5}The Most Important DeepSeekMath Insight}{12}{subsection.8.5}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces The practical difference between PPO and GRPO in the DeepSeekMath setting.}}{13}{table.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {8.5}The Most Important DeepSeekMath Insight}{13}{subsection.8.5}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {9}How to Remember the Whole Story}{13}{section.9}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {10}If You Want One Sentence per Algorithm Family}{13}{section.10}\protected@file@percent }
 \bibcite{suttonbarto}{1}
+\@writefile{toc}{\contentsline {section}{\numberline {10}If You Want One Sentence per Algorithm Family}{14}{section.10}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {11}Further Reading}{14}{section.11}\protected@file@percent }
 \bibcite{watkins}{2}
 \bibcite{mnih2015}{3}
 \bibcite{gae}{4}
@@ -57,7 +59,6 @@
 \bibcite{spinningup}{12}
 \bibcite{rlhf}{13}
 \bibcite{dpo}{14}
-\@writefile{toc}{\contentsline {section}{\numberline {11}Further Reading}{14}{section.11}\protected@file@percent }
 \bibcite{mathshepherd}{15}
 \bibcite{deepseekmath}{16}
 \bibcite{joschu-kl}{17}
